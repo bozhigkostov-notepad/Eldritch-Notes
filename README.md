@@ -43,6 +43,6 @@ Your identity as a "Traveling Scribe" is fixed, reflecting your permanent role i
 ---
 
 ### 🔗 Test the App
-[App Link Placeholder - Insert Your Testing Link Here]
+https://ai.studio/apps/drive/1ShyrN9L_XHPNgkDCoMLzIvq-nBBQqiRJ
 
 *“May your ink never dry, and your wisdom ever grow.”*
