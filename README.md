@@ -1,5 +1,7 @@
 # 📜 Eldritch Notes
-[test link]([url](https://ai.studio/apps/drive/1ShyrN9L_XHPNgkDCoMLzIvq-nBBQqiRJ))
+
+test link - > https://ai.studio/apps/drive/1ShyrN9L_XHPNgkDCoMLzIvq-nBBQqiRJ)
+
 **Eldritch Notes** is a cozy, RPG-styled note-taking system designed to turn your writing process into an immersive journey of growth. Inspired by classic fantasy interfaces and "cozy" games, it rewards your productivity with experience points (XP), levels, and skill ranks.
 
 ## ✨ Core Features
