@@ -5,6 +5,7 @@ export interface Note {
   content: string;
   tags: string[];
   isPinned: boolean;
+  isDeleted: boolean; // Added to track if note is in the Catacombs
   color: string;
   updatedAt: number;
   createdAt: number;

@@ -23,9 +23,15 @@ const App: React.FC = () => {
   // State
   const [notes, setNotes] = useState<Note[]>(() => {
     const saved = localStorage.getItem('eldritch_notes');
-    return saved ? JSON.parse(saved) : [DEFAULT_NOTE];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Migration: Ensure all notes have isDeleted property
+      return parsed.map((n: any) => ({ ...n, isDeleted: !!n.isDeleted }));
+    }
+    return [DEFAULT_NOTE];
   });
   const [activeNoteId, setActiveNoteId] = useState<string>(notes[0]?.id || '');
+  const [currentView, setCurrentView] = useState<'library' | 'catacombs'>('library');
   const [userStats, setUserStats] = useState<UserStats>(() => {
     const saved = localStorage.getItem('eldritch_user');
     return saved ? JSON.parse(saved) : INITIAL_USER;
@@ -47,7 +53,7 @@ const App: React.FC = () => {
 
   // Derived
   const activeNote = useMemo(() => 
-    notes.find(n => n.id === activeNoteId) || notes[0],
+    notes.find(n => n.id === activeNoteId),
     [notes, activeNoteId]
   );
 
@@ -78,12 +84,14 @@ const App: React.FC = () => {
       content: '',
       tags: [],
       isPinned: false,
+      isDeleted: false,
       color: '#a855f7',
       updatedAt: Date.now(),
       createdAt: Date.now(),
     };
     setNotes(prev => [newNote, ...prev]);
     setActiveNoteId(newNote.id);
+    setCurrentView('library');
     addXp(XP_PER_NOTE);
   };
 
@@ -110,6 +118,26 @@ const App: React.FC = () => {
       }
       return n;
     }));
+  };
+
+  const handleBuryNote = (id: string) => {
+    handleUpdateNote(id, { isDeleted: true, isPinned: false });
+    // If burying the active note, select the next available or none
+    const remaining = notes.filter(n => n.id !== id && !n.isDeleted);
+    if (activeNoteId === id) {
+      setActiveNoteId(remaining[0]?.id || '');
+    }
+  };
+
+  const handleRestoreNote = (id: string) => {
+    handleUpdateNote(id, { isDeleted: false });
+  };
+
+  const handlePermanentlyDeleteNote = (id: string) => {
+    setNotes(prev => prev.filter(n => n.id !== id));
+    if (activeNoteId === id) {
+      setActiveNoteId('');
+    }
   };
 
   const handleAddSkill = (skillId: string, amount: number) => {
@@ -139,6 +167,7 @@ const App: React.FC = () => {
     { id: 'sheet', label: 'View Character Sheet', icon: '📜', action: () => setIsCharacterSheetOpen(true), shortcut: 'Shift+C' },
     { id: 'sage', label: 'Consult Sage', icon: '🧙‍♂️', action: handleConsultSage },
     { id: 'pin', label: 'Toggle Pin', icon: '📌', action: () => activeNote && handleUpdateNote(activeNote.id, { isPinned: !activeNote.isPinned }) },
+    { id: 'bury', label: activeNote?.isDeleted ? 'Exhume Scroll' : 'Bury Scroll', icon: activeNote?.isDeleted ? '🪄' : '💀', action: () => activeNote && (activeNote.isDeleted ? handleRestoreNote(activeNote.id) : handleBuryNote(activeNote.id)) },
   ];
 
   return (
@@ -153,19 +182,25 @@ const App: React.FC = () => {
         onNewNote={handleCreateNote}
         userStats={userStats}
         onOpenCharacterSheet={() => setIsCharacterSheetOpen(true)}
+        currentView={currentView}
+        onSwitchView={setCurrentView}
       />
 
       {activeNote ? (
         <Editor 
           note={activeNote}
           onUpdate={handleUpdateNote}
+          onBury={() => handleBuryNote(activeNote.id)}
+          onRestore={() => handleRestoreNote(activeNote.id)}
+          onDeletePermanent={() => handlePermanentlyDeleteNote(activeNote.id)}
           onConsultSage={handleConsultSage}
           isSageThinking={isSageThinking}
           sageAdvice={sageAdvice}
         />
       ) : (
-        <div className="flex-1 flex items-center justify-center bg-slate-900/20 italic text-slate-600 rpg-font tracking-widest animate-pulse">
-            Select a chronicle to begin...
+        <div className="flex-1 flex flex-col items-center justify-center bg-slate-900/20 italic text-slate-600 rpg-font tracking-widest animate-pulse gap-4">
+            <div className="text-4xl opacity-20">📜</div>
+            <div>Select a chronicle to begin...</div>
         </div>
       )}
 

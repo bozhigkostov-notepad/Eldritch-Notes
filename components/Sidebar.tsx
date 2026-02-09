@@ -10,6 +10,8 @@ interface SidebarProps {
   onNewNote: () => void;
   userStats: UserStats;
   onOpenCharacterSheet: () => void;
+  currentView: 'library' | 'catacombs';
+  onSwitchView: (view: 'library' | 'catacombs') => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -18,10 +20,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   onSelectNote, 
   onNewNote, 
   userStats, 
-  onOpenCharacterSheet 
+  onOpenCharacterSheet,
+  currentView,
+  onSwitchView
 }) => {
-  const pinnedNotes = notes.filter(n => n.isPinned);
-  const unpinnedNotes = notes.filter(n => !n.isPinned);
+  const isCatacombs = currentView === 'catacombs';
+  
+  // Filter notes based on view
+  const filteredNotes = notes.filter(n => isCatacombs ? n.isDeleted : !n.isDeleted);
+  const pinnedNotes = filteredNotes.filter(n => n.isPinned);
+  const unpinnedNotes = filteredNotes.filter(n => !n.isPinned);
 
   const renderNoteButton = (note: Note) => (
     <button
@@ -29,13 +37,13 @@ const Sidebar: React.FC<SidebarProps> = ({
       onClick={() => onSelectNote(note.id)}
       className={`w-full text-left p-2.5 rounded-lg transition-all group border ${
         activeNoteId === note.id 
-          ? 'bg-purple-600/20 border-purple-500/40 shadow-[0_0_10px_rgba(168,85,247,0.1)]' 
+          ? isCatacombs ? 'bg-indigo-900/30 border-indigo-500/40 shadow-[0_0_10px_rgba(99,102,241,0.1)]' : 'bg-purple-600/20 border-purple-500/40 shadow-[0_0_10px_rgba(168,85,247,0.1)]' 
           : 'hover:bg-slate-800/50 border-transparent'
       }`}
     >
       <div className="flex items-center gap-2 mb-1">
         {note.isPinned && <span className="text-[10px] animate-pulse text-purple-400">📌</span>}
-        <div className={`text-sm font-medium truncate ${activeNoteId === note.id ? 'text-purple-100' : 'text-slate-400 group-hover:text-slate-200'}`}>
+        <div className={`text-sm font-medium truncate ${activeNoteId === note.id ? isCatacombs ? 'text-indigo-200' : 'text-purple-100' : 'text-slate-400 group-hover:text-slate-200'}`}>
           {note.title || 'Untitled Scroll'}
         </div>
       </div>
@@ -44,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {note.tags.length > 0 && (
         <div className="flex gap-1 overflow-hidden whitespace-nowrap mb-1 mask-linear-right">
           {note.tags.map(tag => (
-            <span key={tag} className="text-[9px] bg-purple-500/10 text-purple-400/70 border border-purple-500/20 px-1 rounded flex-shrink-0">
+            <span key={tag} className={`text-[9px] ${isCatacombs ? 'bg-indigo-500/10 text-indigo-400/70 border-indigo-500/20' : 'bg-purple-500/10 text-purple-400/70 border-purple-500/20'} border px-1 rounded flex-shrink-0`}>
               #{tag}
             </span>
           ))}
@@ -58,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <div className="w-72 h-full flex flex-col bg-slate-950/90 border-r border-slate-800 backdrop-blur-xl z-10">
+    <div className={`w-72 h-full flex flex-col border-r transition-colors duration-500 backdrop-blur-xl z-10 ${isCatacombs ? 'bg-slate-950/95 border-indigo-900/40' : 'bg-slate-950/90 border-slate-800'}`}>
       {/* Header Profile */}
       <div 
         onClick={onOpenCharacterSheet}
@@ -120,7 +128,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Note List */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar px-3 space-y-6 pt-4 pb-12">
+      <div className="flex-1 overflow-y-auto custom-scrollbar px-3 space-y-6 pt-4 pb-12 relative">
+        {/* Catacombs Spectral Overlay effect when active */}
+        {isCatacombs && <div className="absolute inset-0 bg-indigo-900/5 pointer-events-none mix-blend-overlay animate-pulse"></div>}
+
         {/* Pinned Section */}
         {pinnedNotes.length > 0 && (
           <div className="space-y-1">
@@ -135,20 +146,39 @@ const Sidebar: React.FC<SidebarProps> = ({
         {/* Regular Section */}
         <div className="space-y-1">
           {unpinnedNotes.length > 0 && pinnedNotes.length > 0 && (
-            <h4 className="text-[10px] text-slate-500 uppercase tracking-widest font-bold px-2 mb-2 flex items-center gap-2">
-               <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-               Manuscripts
+            <h4 className={`text-[10px] uppercase tracking-widest font-bold px-2 mb-2 flex items-center gap-2 ${isCatacombs ? 'text-indigo-500' : 'text-slate-500'}`}>
+               <span className={`w-1 h-1 rounded-full ${isCatacombs ? 'bg-indigo-600' : 'bg-slate-600'}`}></span>
+               {isCatacombs ? 'Forgotten Catacombs' : 'Manuscripts'}
             </h4>
           )}
           {unpinnedNotes.map(renderNoteButton)}
         </div>
 
-        {notes.length === 0 && (
+        {filteredNotes.length === 0 && (
           <div className="text-center mt-10 text-slate-600 text-xs italic opacity-50">
-             The library is empty...
+             {isCatacombs ? 'The catacombs are empty...' : 'The library is empty...'}
           </div>
         )}
       </div>
+
+      {/* Footer View Toggle */}
+      <div className="p-4 border-t border-slate-800/50 bg-slate-950 flex flex-col gap-2">
+        <button 
+          onClick={() => onSwitchView(isCatacombs ? 'library' : 'catacombs')}
+          className={`w-full py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 border ${
+            isCatacombs 
+            ? 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-purple-500/50' 
+            : 'bg-indigo-950/20 border-indigo-900/30 text-indigo-500/60 hover:text-indigo-400 hover:bg-indigo-900/20'
+          }`}
+        >
+          {isCatacombs ? (
+            <><span>🏛️</span> Return to Library</>
+          ) : (
+            <><span>💀</span> Descend to Catacombs</>
+          )}
+        </button>
+      </div>
+
       <style>{`
         .mask-linear-right {
           mask-image: linear-gradient(to right, black 80%, transparent 100%);

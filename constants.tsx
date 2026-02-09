@@ -44,6 +44,7 @@ export const DEFAULT_NOTE: Note = {
   content: '# Your Journey Begins\n\nWriting here grants you XP. Explore the character sheet in the bottom left to see your progress.',
   tags: ['tutorial', 'welcome'],
   isPinned: true,
+  isDeleted: false,
   color: '#a855f7',
   updatedAt: Date.now(),
   createdAt: Date.now(),

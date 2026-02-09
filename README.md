@@ -1,44 +1,48 @@
 # 📜 Eldritch Notes
 
-test link - > https://ai.studio/apps/drive/1ShyrN9L_XHPNgkDCoMLzIvq-nBBQqiRJ)
+**Eldritch Notes** is an immersive, RPG-themed markdown workspace that transforms your writing habits into a quest for wisdom. Designed with a "cozy-dark" aesthetic, it rewards your productivity with experience points (XP), levels, and skill ranks, making every note a step forward in your journey as a Scribe.
 
-**Eldritch Notes** is a cozy, RPG-styled note-taking system designed to turn your writing process into an immersive journey of growth. Inspired by classic fantasy interfaces and "cozy" games, it rewards your productivity with experience points (XP), levels, and skill ranks.
-
-## ✨ Core Features
+## ✨ Arcane Features
 
 ### 🖋️ The Manuscript System
-*   **Automatic Inscriptions**: No more manual tagging. Simply write `#hashtags` anywhere in your note, and the system will automatically extract them as active inscriptions (tags).
-*   **Pinned Scrolls**: Keep your most important chronicles at the top of your library with the pinning system.
-*   **Live Metrics**: Track your progress with real-time counters for **Glyphs** (characters), **Words**, and the exact time of your last refinement.
-*   **Visual Organization**: A clean, distraction-free writing environment with a focused sidebar for managing your manuscripts.
+*   **Automatic Inscriptions**: Harness the power of runes. Simply write `#hashtags` anywhere in your note, and the system automatically extracts and displays them as active inscriptions.
+*   **Pinned Scrolls**: Use the pin icon to keep your most vital chronicles at the top of your library for quick access.
+*   **Live Metrics**: Monitor your progress with real-time tracking of **Glyphs** (characters), **Words**, and exact **Refinement Timestamps**.
+
+### 💀 The Forgotten Catacombs
+Not every thought is meant for the light. 
+*   **Burying Scrolls**: Click the skull icon to "Bury" a note, moving it from your active library to the **Forgotten Catacombs**.
+*   **Exhuming Wisdom**: Descend into the Catacombs to view your archived thoughts. You can "Exhume" them to return them to the library or **Incinerate** (permanently delete) them if they are no longer needed.
+*   **Spectral Navigation**: Switch between the living Library and the spectral Catacombs via the navigation toggle at the bottom of the sidebar.
+
+### 🖱️ Mastery of the Interface
+*   **Arcane Context Menu**: Right-click anywhere in the app to access the quick-action menu. From here, you can summon new scrolls, view your stats, consult the Sage, or manage your active manuscript without moving your cursor to the toolbar.
+*   **Custom Rune Cursor**: A reactive, magical pointer that pulses and shifts as you interact with the library's elements.
 
 ### 🧙‍♂️ Consult the Sage
-Harness the power of the ethereal realm. By consulting the Sage (powered by Gemini AI), you receive:
-*   **Scryed Summaries**: A lore-accurate summary of your current writing.
-*   **Creative Sparks**: Three divine suggestions to expand your thoughts.
-*   **Wisdom XP**: Gain 20 XP for every consultation.
+When the path forward is clouded, scry into the ethereal realm using the Sage (powered by Gemini AI):
+*   **Lore Summaries**: Get a thematic summary of your current writing.
+*   **Creative Sparks**: Receive three divine suggestions to expand your narrative or thoughts.
+*   **Wisdom XP**: Earn 20 XP for every consultation.
 
-### 🎭 Character Growth (The RPG Loop)
-Your identity as a Chronicler is fixed, reflecting your steady presence in the library. As you write, you grow:
-*   **Leveling System**: Every 1,000 XP advances you to the next Rank.
-*   **Skill Points (SP)**: Earn SP upon leveling up to invest in skills like **Focus**, **Lore**, **Creativity**, and **Discipline**.
-*   **Inspirational Ranks**: While skill levels are purely cosmetic, they serve as a visual testament to your dedication and creative evolution.
+### 🎭 RPG Progression
+Your identity as a "Traveling Scribe" is fixed, reflecting your permanent role in this library.
+*   **Leveling**: Every 1,000 XP advances your Scribe Rank.
+*   **Skill Points (SP)**: Earn SP upon leveling up to invest in **Focus**, **Lore**, **Creativity**, and **Discipline**.
+*   **Growth Visualization**: Your level and rank are prominently displayed on your avatar and within the Character Sheet.
 
 ## 📈 Experience (XP) Rewards
-Your progress is measured by the ink you spill and the thoughts you organize:
 
 | Action | XP Reward |
 | :--- | :--- |
 | **New Chronicle** | 50 XP |
 | **Written Glyphs** | 0.5 XP per character |
-| **Automatic Inscriptions** | 10 XP per unique hashtag found |
+| **Automatic Inscriptions** | 10 XP per unique hashtag |
 | **Sage Consultation** | 20 XP |
 
-## 🎨 Aesthetic & UX
-*   **Custom Cursor**: A magical rune-inspired pointer that reacts to your interaction with the world.
-*   **Contextual Mastery**: A custom in-app right-click menu for quick actions without breaking immersion.
-*   **Cozy Dark Theme**: Deep purples and slates paired with Cinzel typography for a true "ancient library" feel.
-
 ---
+
+### 🔗 Test the App
+[App Link Placeholder - Insert Your Testing Link Here]
 
 *“May your ink never dry, and your wisdom ever grow.”*
