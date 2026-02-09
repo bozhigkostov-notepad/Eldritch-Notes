@@ -2,6 +2,8 @@
 
 **Eldritch Notes** is an immersive, RPG-themed markdown workspace that transforms your writing habits into a quest for wisdom. Designed with a "cozy-dark" aesthetic, it rewards your productivity with experience points (XP), levels, and skill ranks, making every note a step forward in your journey as a Scribe.
 
+<img width="1251" height="679" alt="image" src="https://github.com/user-attachments/assets/8f85b1ec-63f6-4514-a266-86da6fb5576c" />
+
 ## ✨ Arcane Features
 
 ### 🖋️ The Manuscript System
