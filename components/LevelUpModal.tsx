@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface LevelUpModalProps {
   level: number;
@@ -7,9 +7,22 @@ interface LevelUpModalProps {
 }
 
 const LevelUpModal: React.FC<LevelUpModalProps> = ({ level, onClose }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
-    // Optional: play sound
-  }, []);
+    // Auto-focus the button for immediate keyboard interaction
+    buttonRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-500">
@@ -30,8 +43,9 @@ const LevelUpModal: React.FC<LevelUpModalProps> = ({ level, onClose }) => {
         </p>
 
         <button
+          ref={buttonRef}
           onClick={onClose}
-          className="px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg rpg-font tracking-widest shadow-lg shadow-purple-500/30 transition-all hover:scale-105"
+          className="px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg rpg-font tracking-widest shadow-lg shadow-purple-500/30 transition-all hover:scale-105 outline-none focus:ring-2 focus:ring-purple-400"
         >
           Claim Glory
         </button>

@@ -5,7 +5,7 @@ export interface Note {
   content: string;
   tags: string[];
   isPinned: boolean;
-  isDeleted: boolean; // Added to track if note is in the Catacombs
+  isDeleted: boolean;
   color: string;
   updatedAt: number;
   createdAt: number;
@@ -20,14 +20,20 @@ export interface Skill {
 }
 
 export interface UserStats {
-  name: string;
-  avatar: string;
+  bookTitle: string;
+  avatar: string; // Keeping for compatibility but will use first letter in UI
   level: number;
   xp: number;
   skillPoints: number;
   skills: Record<string, number>;
-  streak: number;
-  lastActiveDate: string;
+  // Achievement tracking
+  notesCreatedCount: number;
+  notesUpdatedCount: number;
+  notesDeletedCount: number;
+  totalGlyphsCount: number; // Historical peak or current sum
+  totalWordsCount: number;   // Historical peak or current sum
+  unlockedAchievements: string[];
+  achievementPoints: number;
 }
 
 export enum ContextMenuType {
@@ -42,4 +48,13 @@ export interface ContextMenuItem {
   action: () => void;
   shortcut?: string;
   color?: string;
+}
+
+export interface AchievementThresholds {
+  notesCreated: number[];
+  notesUpdated: number[];
+  notesDeleted: number[];
+  levels: number[];
+  glyphs: number[];
+  words: number[];
 }

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Note, UserStats } from '../types';
 import { INITIAL_SKILLS } from '../constants';
+import PomodoroTimer from './PomodoroTimer';
 
 interface SidebarProps {
   notes: Note[];
@@ -12,6 +13,7 @@ interface SidebarProps {
   onOpenCharacterSheet: () => void;
   currentView: 'library' | 'catacombs';
   onSwitchView: (view: 'library' | 'catacombs') => void;
+  onGainXp: (amount: number) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -22,7 +24,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   userStats, 
   onOpenCharacterSheet,
   currentView,
-  onSwitchView
+  onSwitchView,
+  onGainXp
 }) => {
   const isCatacombs = currentView === 'catacombs';
   
@@ -48,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Tags Preview - One row restricted */}
+      {/* Tags Preview */}
       {note.tags.length > 0 && (
         <div className="flex gap-1 overflow-hidden whitespace-nowrap mb-1 mask-linear-right">
           {note.tags.map(tag => (
@@ -65,37 +68,46 @@ const Sidebar: React.FC<SidebarProps> = ({
     </button>
   );
 
+  const firstLetter = userStats.bookTitle.trim().charAt(0).toUpperCase() || '?';
+
   return (
     <div className={`w-72 h-full flex flex-col border-r transition-colors duration-500 backdrop-blur-xl z-10 ${isCatacombs ? 'bg-slate-950/95 border-indigo-900/40' : 'bg-slate-950/90 border-slate-800'}`}>
       {/* Header Profile */}
-      <div 
-        onClick={onOpenCharacterSheet}
-        className="p-6 cursor-none hover:bg-white/5 transition-colors group border-b border-slate-800/50"
-      >
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <img src={userStats.avatar} alt="Avatar" className="w-12 h-12 rounded-full border-2 border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]" />
-            <div className="absolute -bottom-1 -right-1 bg-purple-600 text-[10px] font-bold px-1.5 rounded-full border border-slate-900 ring-1 ring-purple-400">
-              {userStats.level}
+      <div className="p-6 border-b border-slate-800/50 space-y-4">
+        <div 
+          onClick={onOpenCharacterSheet}
+          className="cursor-none hover:bg-white/5 transition-colors group p-2 rounded-xl -m-2"
+        >
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full border-2 border-purple-500/50 bg-slate-900 flex items-center justify-center text-xl font-bold text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform rpg-font">
+                {firstLetter}
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-purple-600 text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border border-slate-900 ring-1 ring-purple-400 shadow-lg">
+                {userStats.level}
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-slate-100 group-hover:text-purple-300 transition-colors truncate rpg-font tracking-wide">
+                {userStats.bookTitle}
+              </div>
+              <div className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold italic">Open Chronicle</div>
             </div>
           </div>
-          <div>
-            <div className="text-sm font-bold text-slate-100 group-hover:text-purple-300 transition-colors truncate w-32 rpg-font tracking-wide">
-              {userStats.name}
-            </div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Lvl {userStats.level} Scribe</div>
+          
+          <div className="mt-4 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50">
+            <div 
+              className="h-full bg-gradient-to-r from-purple-700 to-fuchsia-500 transition-all duration-700 shadow-[0_0_8px_rgba(168,85,247,0.5)]" 
+              style={{ width: `${(userStats.xp % 1000) / 10}%` }}
+            />
           </div>
-        </div>
-        
-        <div className="mt-4 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50">
-          <div 
-            className="h-full bg-gradient-to-r from-purple-700 to-fuchsia-500 transition-all duration-700 shadow-[0_0_8px_rgba(168,85,247,0.5)]" 
-            style={{ width: `${(userStats.xp % 1000) / 10}%` }}
-          />
         </div>
 
+        {/* Permanent Pomodoro Ritual Timer */}
+        <PomodoroTimer onGainXp={onGainXp} />
+
         {/* Skill Badges Summary */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 pt-2">
           {INITIAL_SKILLS.map((skill) => {
             const level = userStats.skills[skill.id] || 0;
             return (
@@ -116,23 +128,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Action Bar */}
-      <div className="p-4 border-b border-slate-800/30 bg-slate-900/20">
+      {/* Primary Action Button */}
+      <div className="p-4 border-b border-slate-800/30 bg-slate-900/10">
         <button 
           onClick={onNewNote}
           className="w-full flex items-center justify-center gap-3 py-3 bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-xl text-xs font-bold transition-all group shadow-lg shadow-purple-500/5 hover:shadow-purple-500/10"
         >
           <span className="text-xl group-hover:scale-110 transition-transform">✨</span>
-          <span className="rpg-font tracking-[0.2em]">New Chronicle</span>
+          <span className="rpg-font tracking-[0.2em] uppercase">New Chronicle</span>
         </button>
       </div>
 
       {/* Note List */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-3 space-y-6 pt-4 pb-12 relative">
-        {/* Catacombs Spectral Overlay effect when active */}
         {isCatacombs && <div className="absolute inset-0 bg-indigo-900/5 pointer-events-none mix-blend-overlay animate-pulse"></div>}
 
-        {/* Pinned Section */}
         {pinnedNotes.length > 0 && (
           <div className="space-y-1">
             <h4 className="text-[10px] text-purple-400 uppercase tracking-widest font-bold px-2 mb-2 flex items-center gap-2">
@@ -143,9 +153,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
 
-        {/* Regular Section */}
         <div className="space-y-1">
-          {unpinnedNotes.length > 0 && pinnedNotes.length > 0 && (
+          {unpinnedNotes.length > 0 && (
             <h4 className={`text-[10px] uppercase tracking-widest font-bold px-2 mb-2 flex items-center gap-2 ${isCatacombs ? 'text-indigo-500' : 'text-slate-500'}`}>
                <span className={`w-1 h-1 rounded-full ${isCatacombs ? 'bg-indigo-600' : 'bg-slate-600'}`}></span>
                {isCatacombs ? 'Forgotten Catacombs' : 'Manuscripts'}
