@@ -1,4 +1,4 @@
-<img width="2502" height="1358" alt="image" src="https://github.com/user-attachments/assets/04520c74-f030-49d2-85aa-53f2bc1168e2" /># 📜 Eldritch Notes: The Chronicler's Codex
+📜 Eldritch Notes: The Chronicler's Codex
 
 **Eldritch Notes** is an immersive, RPG-themed markdown sanctuary that transforms the act of writing into a legendary quest. Every syllable is a step toward enlightenment; every organized thought is a rank gained in the Great Library.
 
